@@ -13,17 +13,19 @@ namespace Workers
         {
             var coding = Encoding.UTF8;
             char key = 'д';
+            Worker _worker = new Worker();
             int id = 0;
 
             using (StreamReader streamReader = new StreamReader(path, coding))
             {
+                //_worker = new Worker(streamReader.ReadToEnd());
                 string st = streamReader.ReadToEnd();
                 string[] array = st.Split('#');
+                //Console.WriteLine(array[0]);
+
                 for (int i = 0; i < array.Length; i++)
                 {
-
                 }
-                
             }
 
             Console.WriteLine("Чтобы добавить новую запись необходимо ввести следующие данные:\n");
@@ -43,7 +45,7 @@ namespace Workers
                     string PlaceBirthWorker = Console.ReadLine();
 
                     streamWriter.WriteLine(
-                        $"{id}#{DateTime.Now}#{UserFIO}#{AgeWorker}#{HeightWorker}#{AgeWorker}#" +
+                        $"{id}#{DateTime.Now}#{UserFIO}#{AgeWorker}#{HeightWorker}#" +
                         $"{dateBirthWorker.ToShortDateString()}#{PlaceBirthWorker}");
 
                     Console.WriteLine("\nДанные записаны.");
@@ -70,18 +72,6 @@ namespace Workers
                     Console.WriteLine(streamReader.ReadToEnd());
                 }
 
-              
-                    //Console.WriteLine();
-                    //Console.WriteLine("Ой... Кажется, файл пуст.");
-                    //Console.WriteLine("Для закрытия программы нажмите \"Enter\".");
-
-                    //Console.ReadKey();
-                    //Environment.Exit(0);
-                
-
-                //Console.WriteLine("\nРезультат:");
-                //Console.WriteLine();
-                //Console.WriteLine(streamReader.ReadToEnd());
             }
         }
 
