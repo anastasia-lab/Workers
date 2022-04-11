@@ -13,24 +13,32 @@ namespace Workers
         {
             var coding = Encoding.UTF8;
             char key = 'д';
-            Worker _worker = new Worker();
-            int id = 0;
+            Worker[] _worker;
+            //int id = 0;
 
             using (StreamReader streamReader = new StreamReader(path, coding))
             {
                 //_worker = new Worker(streamReader.ReadToEnd());
-                string st = streamReader.ReadToEnd();
-                string[] array = st.Split('#');
-                //Console.WriteLine(array[0]);
+                string ReadFile = streamReader.ReadLine();
+                string[] FileArray = ReadFile.Split('#');
+                Console.WriteLine(FileArray[0]);
+                _worker = new Worker[] { new Worker() };
 
-                for (int i = 0; i < array.Length; i++)
+                for (int i = 0; i < FileArray.Length; i++)
                 {
+                    _worker[0].ID = int.Parse(FileArray[0]);
+                    _worker[0].UserData = FileArray[2];
+                    _worker[0].Age = int.Parse(FileArray[3]);
+                    _worker[0].Height = int.Parse(FileArray[4]);
+                    _worker[0].DateBirth = DateTime.Parse(FileArray[5]);
+                    _worker[0].PlaceBirth = FileArray[6];
                 }
             }
 
             Console.WriteLine("Чтобы добавить новую запись необходимо ввести следующие данные:\n");
             using (StreamWriter streamWriter = new StreamWriter(path, true, coding))
             {
+                _worker = new Worker[] { new Worker() };
                 do
                 {
                     Console.Write("Ф.И.О: ");
@@ -45,7 +53,7 @@ namespace Workers
                     string PlaceBirthWorker = Console.ReadLine();
 
                     streamWriter.WriteLine(
-                        $"{id}#{DateTime.Now}#{UserFIO}#{AgeWorker}#{HeightWorker}#" +
+                        $"{_worker[0].ID}#{DateTime.Now}#{UserFIO}#{AgeWorker}#{HeightWorker}#" +
                         $"{dateBirthWorker.ToShortDateString()}#{PlaceBirthWorker}");
 
                     Console.WriteLine("\nДанные записаны.");

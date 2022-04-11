@@ -8,17 +8,18 @@ namespace Workers
 {
     class Worker
     {
-        string text;
+        static int _id = 0;
         public int ID { get; set; }
         public string UserData { get; set; }
         public DateTime DateBirth { get; set; }
-        public string PlaceBirt { get; set; }
+        public string PlaceBirth { get; set; }
         public int Age { get; set; }
         public int Height { get; set; }
         
         public Worker()
         {
-            //text = _text;
+            ID = _id;
+            _id++;
         }
     }
 }
