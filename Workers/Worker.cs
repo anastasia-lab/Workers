@@ -14,14 +14,12 @@ namespace Workers
         public string PlaceBirth { get; set; }
         public int Age { get; set; }
         public int Height { get; set; }
-        public int ID
-        {
-            get { return _id; }
-            set { _id++; }
-        }
+        public int ID { get; set; }
         
         public Worker()
         {
+            ID = _id;
+            _id++;
         }
     }
 }

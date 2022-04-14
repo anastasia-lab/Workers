@@ -19,17 +19,16 @@ namespace Workers
             {
                 //_worker = new Worker(streamReader.ReadToEnd());
                 string[] ReadFile = streamReader.ReadLine().Split('#');
-                //string[] FileArray = ReadFile.Split('#');
                 _worker = new Worker[] { new Worker() };
 
                 for (int i = 0; i < ReadFile.Length; i++)
-                {
+                { 
                     _worker[0].ID = int.Parse(ReadFile[0]);
-                    _worker[0].UserData = ReadFile[2];
-                    _worker[0].Age = int.Parse(ReadFile[3]);
-                    _worker[0].Height = int.Parse(ReadFile[4]);
-                    _worker[0].DateBirth = DateTime.Parse(ReadFile[5]);
-                    _worker[0].PlaceBirth = ReadFile[6];
+                    //_worker[0].UserData = ReadFile[2];
+                    //_worker[0].Age = int.Parse(ReadFile[3]);
+                    //_worker[0].Height = int.Parse(ReadFile[4]);
+                    //_worker[0].DateBirth = DateTime.Parse(ReadFile[5]);
+                    //_worker[0].PlaceBirth = ReadFile[6];
                 }
             }
 
