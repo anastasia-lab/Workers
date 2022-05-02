@@ -13,31 +13,36 @@ namespace Workers
         {
             var coding = Encoding.UTF8;
             char key = 'д';
-            Worker[] _worker;
+            Worker _worker = new Worker();
+            string ReadLineFile = "";
 
             using (StreamReader streamReader = new StreamReader(path, coding))
             {
-                //_worker = new Worker(streamReader.ReadToEnd());
-                string[] ReadFile = streamReader.ReadLine().Split('#');
-                _worker = new Worker[] { new Worker() };
-
-                for (int i = 0; i < ReadFile.Length; i++)
-                { 
-                    _worker[0].ID = int.Parse(ReadFile[0]);
-                    //_worker[0].UserData = ReadFile[2];
-                    //_worker[0].Age = int.Parse(ReadFile[3]);
-                    //_worker[0].Height = int.Parse(ReadFile[4]);
-                    //_worker[0].DateBirth = DateTime.Parse(ReadFile[5]);
-                    //_worker[0].PlaceBirth = ReadFile[6];
+                while (!streamReader.EndOfStream)
+                {
+                    ReadLineFile = streamReader.ReadLine();
                 }
+
+                if (streamReader.ReadLine() != null)
+                {
+                    string[] ReadFile = ReadLineFile.Split('#');
+
+                    for (int i = 0; i < ReadFile.Length; i++)
+                    {
+                        _worker.ID = int.Parse(ReadFile[0]);
+                    }
+                }
+
             }
 
             Console.WriteLine("Чтобы добавить новую запись необходимо ввести следующие данные:\n");
             using (StreamWriter streamWriter = new StreamWriter(path, true, coding))
             {
-                Worker _WorkerId = new Worker();
+                int _WorkerId = _worker.ID;
+
                 do
                 {
+                    _WorkerId++;
                     Console.Write("Ф.И.О: ");
                     string UserFIO = Console.ReadLine();
                     Console.Write("Возраст: ");
@@ -50,7 +55,7 @@ namespace Workers
                     string PlaceBirthWorker = Console.ReadLine();
 
                     streamWriter.WriteLine(
-                        $"{_WorkerId.ID}#{DateTime.Now}#{UserFIO}#{AgeWorker}#{HeightWorker}#" +
+                        $"{_WorkerId}#{DateTime.Now}#{UserFIO}#{AgeWorker}#{HeightWorker}#" +
                         $"{dateBirthWorker.ToShortDateString()}#{PlaceBirthWorker}");
 
                     Console.WriteLine("\nДанные записаны.");
@@ -73,7 +78,7 @@ namespace Workers
             {
                 while (!streamReader.EndOfStream)
                 {
-                    Console.WriteLine("\nРезультат:");
+                    Console.WriteLine("\nРезультат:\n");
                     Console.WriteLine(streamReader.ReadToEnd());
                 }
 

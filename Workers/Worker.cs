@@ -18,8 +18,7 @@ namespace Workers
         
         public Worker()
         {
-            ID = _id;
-            _id++;
+
         }
     }
 }
