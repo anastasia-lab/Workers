@@ -4,11 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Collections;
 
 namespace Workers
 {
     class Program
     {
+        /// <summary>
+        /// Добавление новой записи в файл
+        /// </summary>
+        /// <param name="path"> Путь к файлу </param>
         static void WriteData(string path)
         {
             var coding = Encoding.UTF8;
@@ -22,16 +27,13 @@ namespace Workers
                 {
                     ReadLineFile = streamReader.ReadLine();
                 }
+                string[] ReadFile = ReadLineFile.Split('#');
 
-                if (streamReader.ReadLine() != null)
+                for (int i = 0; i < ReadFile.Length; i++)
                 {
-                    string[] ReadFile = ReadLineFile.Split('#');
-
-                    for (int i = 0; i < ReadFile.Length; i++)
-                    {
-                        _worker.ID = int.Parse(ReadFile[0]);
-                    }
+                    _worker.ID = int.Parse(ReadFile[0]);
                 }
+
 
             }
 
@@ -71,6 +73,10 @@ namespace Workers
 
         }
 
+        /// <summary>
+        /// Чтение данных из файла
+        /// </summary>
+        /// <param name="path"> Путь к файлу </param>
         static void ReadData(string path)
         {
             var coding = Encoding.UTF8;
@@ -85,12 +91,71 @@ namespace Workers
             }
         }
 
+        /// <summary>
+        /// Удаление данных из файла
+        /// </summary>
+        /// <param name="path"> Путь к файлу </param>
+        static void DeleteData(string path)
+        {
+            string[] Line = null;
+            Worker worker = new Worker();
+
+
+            string WriteAllFile = File.ReadAllText(path);
+            Console.WriteLine("\nСписок сотрудников:");
+            Console.WriteLine(WriteAllFile);
+
+            Console.Write("Какую запись хотите удалить: ");
+            int UserNumber = int.Parse(Console.ReadLine());
+            string[] ReadFile = File.ReadAllLines(path);
+
+            ReadFile[UserNumber - 1] = "";
+
+            List<string> list = new List<string>(ReadFile);
+
+            if (File.Exists(path))
+            {
+                list.RemoveAll(x => x == String.Empty);
+                File.WriteAllLines(path,list);
+            }
+
+                Console.WriteLine("Данные удалены.");
+        }
+
+        /// <summary>
+        /// Редактирование данных в файле
+        /// </summary>
+        /// <param name="path"> Путь к файлу </param>
+        static void EditingData(string path)
+        { }
+
+        /// <summary>
+        /// Загрузка данных в выбранном диапазоне
+        /// </summary>
+        /// <param name="path"> Путь к файлу </param>
+        static void LoadindDataInTheRand(string path)
+        { }
+
+        /// <summary>
+        /// Сортировка данных
+        /// </summary>
+        /// <param name="path"></param>
+        static void SortData(string path)
+        { }
+
         static void Main(string[] args)
         {
-            Console.WriteLine("Добрый день");
+            Console.WriteLine("Добрый день.");
 
-            Console.WriteLine("Что хотите сделать: 1 - ввести данные файла на экран; 2 - добавить новую запись в файл");
-            Console.Write("Ваш выбор: ");
+            Console.WriteLine("\0Что хотите сделать:");
+            Console.WriteLine("\0 1 - Просмотр записи;");
+            Console.WriteLine("\0 2 - Создание записи;");
+            Console.WriteLine("\0 3 - Удаление записи;");
+            Console.WriteLine("\0 4 - Редактирование записи;");
+            Console.WriteLine("\0 5 - Загрузить записи в выбранном диаопазоне;");
+            Console.WriteLine("\0 6 - Сортировка записи");
+
+            Console.Write("\nВаш выбор: ");
             int UserChose = int.Parse(Console.ReadLine());
 
             if (!File.Exists("workers.txt"))
@@ -112,6 +177,26 @@ namespace Workers
             if (UserChose == 2)
             {
                 WriteData("workers.txt");
+            }
+
+            if (UserChose == 3)
+            {
+                DeleteData("workers.txt");
+            }
+
+            if (UserChose == 4)
+            {
+
+            }
+
+            if (UserChose == 5)
+            {
+
+            }
+
+            if (UserChose == 6)
+            {
+
             }
 
             Console.ReadKey();
