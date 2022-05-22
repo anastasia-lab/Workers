@@ -108,7 +108,7 @@ namespace Workers
 
             ReadFile[UserNumber - 1] = "";
 
-            List<string> list = new List<string>(ReadFile); // Список из загруженного файла 
+            List<string> list = new List<string>(ReadFile); // Список с удаленной записью
             List<string> newList = new List<string>(); 
 
             using (StreamWriter streamWriter = new StreamWriter(path, true, Encoding.UTF8))
