@@ -19,17 +19,8 @@ namespace Workers
 
         public Worker()
         {
-        }
-
-        public Worker(int id, DateTime DateTimeCreatDataUser, string UserInfo, int AgeUser,int HeightUser, DateTime DateBirthUser, string PlaceBirthUser)
-        {
-            ID = id;
-            DateTimeCreatDataUser = DateTimeCreatData;
-            UserData = UserInfo;
-            Age = AgeUser;
-            Height = HeightUser;
-            DateBirth = DateBirthUser;
-            PlaceBirth = PlaceBirthUser;
+            ID = _id;
+            _id++;
         }
 
     }

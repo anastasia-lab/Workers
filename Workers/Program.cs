@@ -34,17 +34,14 @@ namespace Workers
                     _worker.ID = int.Parse(ReadFile[0]);
                 }
 
-
             }
 
             Console.WriteLine("Чтобы добавить новую запись необходимо ввести следующие данные:\n");
             using (StreamWriter streamWriter = new StreamWriter(path, true, coding))
             {
-                int _WorkerId = _worker.ID;
-
                 do
                 {
-                    _WorkerId++;
+                    _worker.ID++;
                     Console.Write("Ф.И.О: ");
                     string UserFIO = Console.ReadLine();
                     Console.Write("Возраст: ");
@@ -57,7 +54,7 @@ namespace Workers
                     string PlaceBirthWorker = Console.ReadLine();
 
                     streamWriter.WriteLine(
-                        $"{_WorkerId}#{DateTime.Now}#{UserFIO}#{AgeWorker}#{HeightWorker}#" +
+                        $"{_worker.ID}#{DateTime.Now}#{UserFIO}#{AgeWorker}#{HeightWorker}#" +
                         $"{dateBirthWorker.ToShortDateString()}#{PlaceBirthWorker}");
 
                     Console.WriteLine("\nДанные записаны.");
@@ -67,7 +64,7 @@ namespace Workers
 
                 } while (char.ToLower(key) == 'д');
 
-                Console.WriteLine("Нажмите \" Enter\"");
+                Console.WriteLine("Нажмите \"Enter\"");
             }
 
 
@@ -105,21 +102,45 @@ namespace Workers
             Console.WriteLine("\nСписок сотрудников:");
             Console.WriteLine(WriteAllFile);
 
-            Console.Write("Какую запись хотите удалить: ");
+            Console.Write("\nКакую запись хотите удалить: ");
             int UserNumber = int.Parse(Console.ReadLine());
             string[] ReadFile = File.ReadAllLines(path);
 
             ReadFile[UserNumber - 1] = "";
 
-            List<string> list = new List<string>(ReadFile);
+            List<string> list = new List<string>(ReadFile); // Список из загруженного файла 
+            List<string> newList = new List<string>(); 
 
-            if (File.Exists(path))
+            using (StreamWriter streamWriter = new StreamWriter(path, true, Encoding.UTF8))
             {
-                list.RemoveAll(x => x == String.Empty);
-                File.WriteAllLines(path,list);
+                for (int i = 0; i < list.Count; i++)
+                {
+
+                    if (list[i] == "")
+                    {
+                        list.RemoveAll(x => x == String.Empty);
+
+                        for (int j = i; j < list.Count; j++)
+                        {
+                            Line = list[j].Split('#');
+                            worker.ID = int.Parse(Line[0]);
+                            worker.ID--;
+                            worker.DateTimeCreatData = DateTime.Parse(Line[1]);
+                            worker.UserData = Line[2];
+                            worker.Age = int.Parse(Line[3]);
+                            worker.Height = int.Parse(Line[4]);
+                            worker.DateBirth = DateTime.Parse(Line[5]);
+                            worker.PlaceBirth = Line[6];
+                            newList.Add(worker.ID.ToString() + '#' + worker.DateTimeCreatData + '#' + worker.UserData
+                                + '#' + worker.Age + '#' + worker.Height + '#' + worker.DateBirth + '#' + worker.PlaceBirth);
+                        }
+
+                    }
+                }
+                streamWriter.WriteLine(list, newList);
             }
 
-                Console.WriteLine("Данные удалены.");
+            Console.WriteLine("Данные удалены.");
         }
 
         /// <summary>
