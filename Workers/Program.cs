@@ -94,7 +94,7 @@ namespace Workers
         /// <param name="path"> Путь к файлу </param>
         static void DeleteData(string path)
         {
-            string[] Line = null;
+            string[] SplitString = null;
             Worker worker = new Worker();
 
 
@@ -108,36 +108,36 @@ namespace Workers
 
             ReadFile[UserNumber - 1] = "";
 
-            List<string> list = new List<string>(ReadFile); // Список с удаленной записью
-            List<string> newList = new List<string>(); 
+            List<string> ListDeleteString = new List<string>(ReadFile); // List с удаленной(пустой) записью
+            List<string> newListString = new List<string>(); // Новый List без удаленной(пустой) записи
 
             using (StreamWriter streamWriter = new StreamWriter(path, true, Encoding.UTF8))
             {
-                for (int i = 0; i < list.Count; i++)
+                for (int i = 0; i < ListDeleteString.Count; i++)
                 {
 
-                    if (list[i] == "")
+                    if (ListDeleteString[i] == "")
                     {
-                        list.RemoveAll(x => x == String.Empty);
+                        ListDeleteString.RemoveAll(x => x == String.Empty);
 
-                        for (int j = i; j < list.Count; j++)
+                        for (int j = i; j < ListDeleteString.Count; j++)
                         {
-                            Line = list[j].Split('#');
-                            worker.ID = int.Parse(Line[0]);
+                            SplitString = ListDeleteString[j].Split('#');
+                            worker.ID = int.Parse(SplitString[0]);
                             worker.ID--;
-                            worker.DateTimeCreatData = DateTime.Parse(Line[1]);
-                            worker.UserData = Line[2];
-                            worker.Age = int.Parse(Line[3]);
-                            worker.Height = int.Parse(Line[4]);
-                            worker.DateBirth = DateTime.Parse(Line[5]);
-                            worker.PlaceBirth = Line[6];
-                            newList.Add(worker.ID.ToString() + '#' + worker.DateTimeCreatData + '#' + worker.UserData
+                            worker.DateTimeCreatData = DateTime.Parse(SplitString[1]);
+                            worker.UserData = SplitString[2];
+                            worker.Age = int.Parse(SplitString[3]);
+                            worker.Height = int.Parse(SplitString[4]);
+                            worker.DateBirth = DateTime.Parse(SplitString[5]);
+                            worker.PlaceBirth = SplitString[6];
+                            newListString.Add(worker.ID.ToString() + '#' + worker.DateTimeCreatData + '#' + worker.UserData
                                 + '#' + worker.Age + '#' + worker.Height + '#' + worker.DateBirth + '#' + worker.PlaceBirth);
                         }
 
                     }
                 }
-                streamWriter.WriteLine(list, newList);
+                //streamWriter.WriteLine(list, newList);
             }
 
             Console.WriteLine("Данные удалены.");
@@ -162,7 +162,36 @@ namespace Workers
         /// </summary>
         /// <param name="path"></param>
         static void SortData(string path)
-        { }
+        {
+            List<Worker> list = new List<Worker>();
+            Worker worker = new Worker();
+            string[] SplitString = null;
+
+            string[] ArrayFile = File.ReadAllLines(path);
+
+            for (int i = 0; i < ArrayFile.Length; i++)
+            {
+                SplitString = ArrayFile[i].Split('#');
+                worker.ID = int.Parse(SplitString[0]);
+                worker.DateTimeCreatData = DateTime.Parse(SplitString[1]);
+                worker.UserData = SplitString[2];
+                worker.Age = int.Parse(SplitString[3]);
+                worker.Height = int.Parse(SplitString[4]);
+                worker.DateBirth = DateTime.Parse(SplitString[5]);
+                worker.PlaceBirth = SplitString[6];
+
+                list.Add(new Worker(worker.ID, worker.DateTimeCreatData, worker.UserData, worker.Age, 
+                    worker.Height, worker.DateBirth,worker.PlaceBirth));
+            }
+
+            list = list.OrderByDescending(x => x.Age).ToList();
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                Console.WriteLine(list[i]);
+            }
+            
+        }
 
         static void Main(string[] args)
         {
@@ -217,7 +246,7 @@ namespace Workers
 
             if (UserChose == 6)
             {
-
+                SortData("workers.txt");
             }
 
             Console.ReadKey();
