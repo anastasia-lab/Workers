@@ -207,7 +207,8 @@ namespace Workers
                 for (int i = 0; i < workers.Length; i++)
                 {
                     Console.WriteLine($"{workers[i].ID}#{workers[i].DateTimeCreatData}#{workers[i].UserData}#" +
-                        $"{workers[i].Age}#{workers[i].Height}#{workers[i].DateBirth}#{workers[i].PlaceBirth}");
+                        $"{workers[i].Age}#{workers[i].Height}#{workers[i].DateBirth.ToShortDateString()}#" +
+                        $"{workers[i].PlaceBirth}");
                 }
             }
 
