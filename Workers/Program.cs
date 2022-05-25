@@ -163,34 +163,54 @@ namespace Workers
         /// <param name="path"></param>
         static void SortData(string path)
         {
-            List<Worker> list = new List<Worker>();
-            Worker worker = new Worker();
             string[] SplitString = null;
 
             string[] ArrayFile = File.ReadAllLines(path);
+            Worker[] workers = new Worker[ArrayFile.Length];
 
             for (int i = 0; i < ArrayFile.Length; i++)
             {
                 SplitString = ArrayFile[i].Split('#');
-                worker.ID = int.Parse(SplitString[0]);
-                worker.DateTimeCreatData = DateTime.Parse(SplitString[1]);
-                worker.UserData = SplitString[2];
-                worker.Age = int.Parse(SplitString[3]);
-                worker.Height = int.Parse(SplitString[4]);
-                worker.DateBirth = DateTime.Parse(SplitString[5]);
-                worker.PlaceBirth = SplitString[6];
-
-                list.Add(new Worker(worker.ID, worker.DateTimeCreatData, worker.UserData, worker.Age, 
-                    worker.Height, worker.DateBirth,worker.PlaceBirth));
+                workers[i] = new Worker();
+                workers[i].ID = int.Parse(SplitString[0]);
+                workers[i].DateTimeCreatData = DateTime.Parse(SplitString[1]);
+                workers[i].UserData = SplitString[2];
+                workers[i].Age = int.Parse(SplitString[3]);
+                workers[i].Height = int.Parse(SplitString[4]);
+                workers[i].DateBirth = DateTime.Parse(SplitString[5]);
+                workers[i].PlaceBirth = SplitString[6];
             }
 
-            list = list.OrderByDescending(x => x.Age).ToList();
+            Console.WriteLine("\nПо какому критерию отсортировать список сотрудников:");
+            Console.WriteLine("\0 1 - По дате созданания файла в порядке возрастания;");
+            Console.WriteLine("\0 2 - По дате созданания файла в порядке убыванияю");
+            Console.Write("\nВаш выбор: ");
+            int UserNumberChoice = int.Parse(Console.ReadLine());
 
-            for (int i = 0; i < list.Count; i++)
+            Console.WriteLine("\nРезультат:");
+            if (UserNumberChoice == 1)
             {
-                Console.WriteLine(list[i]);
+                workers = workers.OrderBy(x => x.DateTimeCreatData).ToArray();
+
+                for (int i = 0; i < workers.Length; i++)
+                {
+                    Console.WriteLine($"{workers[i].ID}#{workers[i].DateTimeCreatData}#{workers[i].UserData}#" +
+                        $"{workers[i].Age}#{workers[i].Height}#{workers[i].DateBirth.ToShortDateString()}#" +
+                        $"{workers[i].PlaceBirth}");
+                }
             }
-            
+
+            if (UserNumberChoice == 2)
+            {
+                workers = workers.OrderByDescending(x => x.DateTimeCreatData).ToArray();
+
+                for (int i = 0; i < workers.Length; i++)
+                {
+                    Console.WriteLine($"{workers[i].ID}#{workers[i].DateTimeCreatData}#{workers[i].UserData}#" +
+                        $"{workers[i].Age}#{workers[i].Height}#{workers[i].DateBirth}#{workers[i].PlaceBirth}");
+                }
+            }
+
         }
 
         static void Main(string[] args)
