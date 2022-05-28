@@ -96,24 +96,36 @@ namespace Workers
         static void DeleteData(string path)
         {
             string[] SplitString = null; // Массив для хранения строк, разделенных символом '#'
-            Worker worker = new Worker();
-
 
             string WriteAllFile = File.ReadAllText(path); 
             Console.WriteLine("\nСписок сотрудников:");
             Console.WriteLine(WriteAllFile);
 
+            string[] ReadFile = File.ReadAllLines(path); // Хранение данных из файла
+
             Console.Write("\nКакую запись хотите удалить: ");
             int UserNumber = int.Parse(Console.ReadLine());
 
-            string[] ReadFile = File.ReadAllLines(path); // Хранение данных из файла
-            Worker[] workers = new Worker[ReadFile.Length];
             ReadFile[UserNumber - 1] = "";
 
             List<string> ListDeleteString = new List<string>(ReadFile); // List с удаленной(пустой) записью
+            Worker[] workers = new Worker[ListDeleteString.Count - 1];
 
             for (int i = 0; i < ListDeleteString.Count; i++)
             {
+                SplitString = ListDeleteString[i].Split('#');
+
+                if (ListDeleteString[i] != "" && int.Parse(SplitString[0]) < UserNumber)
+                {
+                    workers[i] = new Worker();
+                    workers[i].ID = int.Parse(SplitString[0]);
+                    workers[i].DateTimeCreatData = DateTime.Parse(SplitString[1]);
+                    workers[i].UserData = SplitString[2];
+                    workers[i].Age = int.Parse(SplitString[3]);
+                    workers[i].Height = int.Parse(SplitString[4]);
+                    workers[i].DateBirth = DateTime.Parse(SplitString[5]);
+                    workers[i].PlaceBirth = SplitString[6];
+                }
                 if (ListDeleteString[i] == "")
                 {
                     ListDeleteString.RemoveAll(x => x == String.Empty);
@@ -121,22 +133,29 @@ namespace Workers
                     for (int j = i; j < ListDeleteString.Count; j++)
                     {
                         SplitString = ListDeleteString[j].Split('#');
-                        worker.ID = int.Parse(SplitString[0]);
-                        worker.ID--;
-                        worker.DateTimeCreatData = DateTime.Parse(SplitString[1]);
-                        worker.UserData = SplitString[2];
-                        worker.Age = int.Parse(SplitString[3]);
-                        worker.Height = int.Parse(SplitString[4]);
-                        worker.DateBirth = DateTime.Parse(SplitString[5]);
-                        worker.PlaceBirth = SplitString[6];
-                        ListDeleteString.Add(worker.ID.ToString() + '#' + worker.DateTimeCreatData + '#' + worker.UserData
-                            + '#' + worker.Age + '#' + worker.Height + '#' + worker.DateBirth + '#' + worker.PlaceBirth);
+                        workers[j] = new Worker();
+                        workers[j].ID = int.Parse(SplitString[0]);
+                        workers[j].ID--;
+                        workers[j].DateTimeCreatData = DateTime.Parse(SplitString[1]);
+                        workers[j].UserData = SplitString[2];
+                        workers[j].Age = int.Parse(SplitString[3]);
+                        workers[j].Height = int.Parse(SplitString[4]);
+                        workers[j].DateBirth = DateTime.Parse(SplitString[5]);
+                        workers[j].PlaceBirth = SplitString[6];
                     }
 
                 }
             }
 
-            File.WriteAllLines(path,ListDeleteString);
+            using (StreamWriter streamWriter = new StreamWriter(path, false, Encoding.UTF8))
+            {
+                for (int i = 0; i < workers.Length; i++)
+                {
+                    streamWriter.WriteLine($"{workers[i].ID}#{workers[i].DateTimeCreatData}#{workers[i].UserData}#" +
+                            $"{workers[i].Age}#{workers[i].Height}#{workers[i].DateBirth.ToShortDateString()}#" +
+                            $"{workers[i].PlaceBirth}");
+                }
+            }
 
             Console.WriteLine("Данные удалены.");
         }
@@ -151,7 +170,6 @@ namespace Workers
 
             string[] ReadLineFile = File.ReadAllLines(path); // Хранение данных из файла
             Worker[] workers = new Worker[ReadLineFile.Length];
-            List<Worker> listWorker = new List<Worker>();
 
             for (int i = 0; i < ReadLineFile.Length; i++)
             {
