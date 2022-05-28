@@ -168,7 +168,7 @@ namespace Workers
             }
 
             string WriteLineText = File.ReadAllText(path);
-            Console.WriteLine("\nДанные, хронящиеся в файле:");
+            Console.WriteLine("\nДанные, хранящиеся в файле:");
             Console.WriteLine(WriteLineText);
 
             Console.Write("Какую запись хотите изменить: ");
