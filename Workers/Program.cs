@@ -36,7 +36,7 @@ namespace Workers
 
             }
 
-            Console.WriteLine("Чтобы добавить новую запись необходимо ввести следующие данные:\n");
+            Console.WriteLine("\nДля добавления введите данные:\n");
             using (StreamWriter streamWriter = new StreamWriter(path, true, coding))
             {
                 do
@@ -54,8 +54,8 @@ namespace Workers
                     string PlaceBirthWorker = Console.ReadLine();
 
                     streamWriter.WriteLine(
-                        $"{_worker.ID} # {DateTime.Now} # {UserFIO} # {AgeWorker} # {HeightWorker} # " +
-                        $"{dateBirthWorker.ToShortDateString()} # {PlaceBirthWorker}");
+                        $"{_worker.ID}#{DateTime.Now}#{UserFIO}#{AgeWorker}#{HeightWorker}#" +
+                        $"{dateBirthWorker.ToShortDateString()}#{PlaceBirthWorker}");
 
                     Console.WriteLine("\nДанные записаны.");
 
@@ -104,41 +104,38 @@ namespace Workers
 
             Console.Write("\nКакую запись хотите удалить: ");
             int UserNumber = int.Parse(Console.ReadLine());
-            string[] ReadFile = File.ReadAllLines(path);
 
+            string[] ReadFile = File.ReadAllLines(path);
             ReadFile[UserNumber - 1] = "";
 
             List<string> ListDeleteString = new List<string>(ReadFile); // List с удаленной(пустой) записью
-            List<string> newListString = new List<string>(); // Новый List без удаленной(пустой) записи
 
-            using (StreamWriter streamWriter = new StreamWriter(path, true, Encoding.UTF8))
+            for (int i = 0; i < ListDeleteString.Count; i++)
             {
-                for (int i = 0; i < ListDeleteString.Count; i++)
+
+                if (ListDeleteString[i] == "")
                 {
+                    ListDeleteString.RemoveAll(x => x == String.Empty);
 
-                    if (ListDeleteString[i] == "")
+                    for (int j = i; j < ListDeleteString.Count; j++)
                     {
-                        ListDeleteString.RemoveAll(x => x == String.Empty);
-
-                        for (int j = i; j < ListDeleteString.Count; j++)
-                        {
-                            SplitString = ListDeleteString[j].Split('#');
-                            worker.ID = int.Parse(SplitString[0]);
-                            worker.ID--;
-                            worker.DateTimeCreatData = DateTime.Parse(SplitString[1]);
-                            worker.UserData = SplitString[2];
-                            worker.Age = int.Parse(SplitString[3]);
-                            worker.Height = int.Parse(SplitString[4]);
-                            worker.DateBirth = DateTime.Parse(SplitString[5]);
-                            worker.PlaceBirth = SplitString[6];
-                            newListString.Add(worker.ID.ToString() + '#' + worker.DateTimeCreatData + '#' + worker.UserData
-                                + '#' + worker.Age + '#' + worker.Height + '#' + worker.DateBirth + '#' + worker.PlaceBirth);
-                        }
-
+                        SplitString = ListDeleteString[j].Split('#');
+                        worker.ID = int.Parse(SplitString[0]);
+                        worker.ID--;
+                        worker.DateTimeCreatData = DateTime.Parse(SplitString[1]);
+                        worker.UserData = SplitString[2];
+                        worker.Age = int.Parse(SplitString[3]);
+                        worker.Height = int.Parse(SplitString[4]);
+                        worker.DateBirth = DateTime.Parse(SplitString[5]);
+                        worker.PlaceBirth = SplitString[6];
+                        ListDeleteString.Add(worker.ID.ToString() + '#' + worker.DateTimeCreatData + '#' + worker.UserData
+                            + '#' + worker.Age + '#' + worker.Height + '#' + worker.DateBirth + '#' + worker.PlaceBirth);
                     }
+
                 }
-                //streamWriter.WriteLine(list, newList);
             }
+
+            File.WriteAllLines(path,ListDeleteString);
 
             Console.WriteLine("Данные удалены.");
         }
@@ -200,7 +197,6 @@ namespace Workers
                 Console.Write("\nВаш выбор: ");
                 int NumberSortChoice = int.Parse(Console.ReadLine());
 
-                Console.WriteLine("\nРезультат:");
                 switch (NumberSortChoice)
                 {
                     case 1:
@@ -224,6 +220,7 @@ namespace Workers
 
                 }
 
+                Console.WriteLine("\nРезультат:");
                 for (int i = 0; i < workers.Length; i++)
                 {
                     Console.WriteLine($"{workers[i].ID}#{workers[i].DateTimeCreatData}#{workers[i].UserData}#" +
@@ -247,7 +244,6 @@ namespace Workers
                 Console.Write("\nВаш выбор: ");
                 int NumberSortChoice = int.Parse(Console.ReadLine());
 
-                Console.WriteLine("\nРезультат:");
                 switch (NumberSortChoice)
                 {
                     case 1:
@@ -274,6 +270,7 @@ namespace Workers
 
                 }
 
+                Console.WriteLine("\nРезультат:");
                 for (int i = 0; i < workers.Length; i++)
                 {
                     Console.WriteLine($"{workers[i].ID}#{workers[i].DateTimeCreatData}#{workers[i].UserData}#" +
@@ -310,34 +307,26 @@ namespace Workers
                 Environment.Exit(0);
             }
 
-            if (UserChose == 1)
+            switch (UserChose)
             {
-                ReadData("workers.txt");
-            }
+                case 1:
+                    ReadData("workers.txt");
+                    break;
+                case 2:
+                    WriteData("workers.txt");
+                    break;
+                case 3:
+                    DeleteData("workers.txt");
+                    break;
+                case 4:
 
-            if (UserChose == 2)
-            {
-                WriteData("workers.txt");
-            }
+                    break;
+                case 5:
 
-            if (UserChose == 3)
-            {
-                DeleteData("workers.txt");
-            }
-
-            if (UserChose == 4)
-            {
-
-            }
-
-            if (UserChose == 5)
-            {
-
-            }
-
-            if (UserChose == 6)
-            {
-                SortData("workers.txt");
+                    break;
+                case 6:
+                    SortData("workers.txt");
+                    break;
             }
 
             Console.ReadKey();
