@@ -10,6 +10,7 @@ namespace Workers
 {
     class Program
     {
+        #region Методы работы с файлом
         /// <summary>
         /// Добавление новой записи в файл
         /// </summary>
@@ -19,7 +20,7 @@ namespace Workers
             var coding = Encoding.UTF8;
             char key = 'д';
             Worker _worker = new Worker();
-            string ReadLineFile = "";
+            string ReadLineFile = ""; //чтение отдельных строк из файла
 
             using (StreamReader streamReader = new StreamReader(path, coding))
             {
@@ -27,7 +28,7 @@ namespace Workers
                 {
                     ReadLineFile = streamReader.ReadLine();
                 }
-                string[] ReadFile = ReadLineFile.Split('#');
+                string[] ReadFile = ReadLineFile.Split('#'); // хранение строк из файла, разделенных символом '#'
 
                 for (int i = 0; i < ReadFile.Length; i++)
                 {
@@ -94,25 +95,25 @@ namespace Workers
         /// <param name="path"> Путь к файлу </param>
         static void DeleteData(string path)
         {
-            string[] SplitString = null;
+            string[] SplitString = null; // Массив для хранения строк, разделенных символом '#'
             Worker worker = new Worker();
 
 
-            string WriteAllFile = File.ReadAllText(path);
+            string WriteAllFile = File.ReadAllText(path); 
             Console.WriteLine("\nСписок сотрудников:");
             Console.WriteLine(WriteAllFile);
 
             Console.Write("\nКакую запись хотите удалить: ");
             int UserNumber = int.Parse(Console.ReadLine());
 
-            string[] ReadFile = File.ReadAllLines(path);
+            string[] ReadFile = File.ReadAllLines(path); // Хранение данных из файла
+            Worker[] workers = new Worker[ReadFile.Length];
             ReadFile[UserNumber - 1] = "";
 
             List<string> ListDeleteString = new List<string>(ReadFile); // List с удаленной(пустой) записью
 
             for (int i = 0; i < ListDeleteString.Count; i++)
             {
-
                 if (ListDeleteString[i] == "")
                 {
                     ListDeleteString.RemoveAll(x => x == String.Empty);
@@ -145,7 +146,94 @@ namespace Workers
         /// </summary>
         /// <param name="path"> Путь к файлу </param>
         static void EditingData(string path)
-        { }
+        {
+            string[] SplitString = null; // Массив для хранения строк, разделенных знаком '#'
+
+            string[] ReadLineFile = File.ReadAllLines(path); // Хранение данных из файла
+            Worker[] workers = new Worker[ReadLineFile.Length];
+            List<Worker> listWorker = new List<Worker>();
+
+            for (int i = 0; i < ReadLineFile.Length; i++)
+            {
+                SplitString = ReadLineFile[i].Split('#');
+                workers[i] = new Worker();
+
+                workers[i].ID = int.Parse(SplitString[0]);
+                workers[i].DateTimeCreatData = DateTime.Parse(SplitString[1]);
+                workers[i].UserData = SplitString[2];
+                workers[i].Age = int.Parse(SplitString[3]);
+                workers[i].Height = int.Parse(SplitString[4]);
+                workers[i].DateBirth = DateTime.Parse(SplitString[5]);
+                workers[i].PlaceBirth = SplitString[6];
+            }
+
+            string WriteLineText = File.ReadAllText(path);
+            Console.WriteLine("\nДанные, хронящиеся в файле:");
+            Console.WriteLine(WriteLineText);
+
+            Console.Write("Какую запись хотите изменить: ");
+            int UserChoiceNumber = int.Parse(Console.ReadLine());
+
+            for (int i = 0; i < workers.Length; i++)
+            {
+                if (workers[i].ID == UserChoiceNumber)
+                {
+                    Console.WriteLine("\nЧто хотите изменить: ");
+                    Console.WriteLine("\0 1 - Ф.И.О сотрудника;");
+                    Console.WriteLine("\0 2 - Возраст сотрудника;");
+                    Console.WriteLine("\0 3 - Рост сотрудника;");
+                    Console.WriteLine("\0 4 - Дату рождения сотрудника;");
+                    Console.WriteLine("\0 5 - Место рождения сотрудника.");
+
+                    Console.Write("\nВаш выбор: ");
+                    int UserNumberEdit = int.Parse(Console.ReadLine());
+
+                    switch (UserNumberEdit)
+                    {
+                        case 1:
+                            Console.Write("Введите новой ФИО сотрудника: ");
+                            string NewWorkerFIO = Console.ReadLine();
+
+                            workers[i].UserData = NewWorkerFIO;
+                            break;
+                        case 2:
+                            Console.Write("Введите новый возраст сотрудника: ");
+                            int NewWorkerAge = int.Parse(Console.ReadLine());
+
+                            workers[i].Age = NewWorkerAge;
+                            break;
+                        case 3:
+                            Console.Write("Введите новый рост сотрудника: ");
+                            int NewWorkerHeight = int.Parse(Console.ReadLine());
+
+                            workers[i].Height = NewWorkerHeight;
+                            break;
+                        case 4:
+                            Console.Write("Введите новую дату рождения сотрудника: ");
+                            DateTime NewWorkerDateBirth = DateTime.Parse(Console.ReadLine());
+
+                            workers[i].DateBirth = NewWorkerDateBirth;
+                            break;
+                        case 5:
+                            Console.Write("Введите новое место рождения сотрудника: ");
+                            string NewWorkerPlaceBirth = Console.ReadLine();
+
+                            workers[i].PlaceBirth = NewWorkerPlaceBirth;
+                            break;
+                    }
+                }
+            }
+
+            using (StreamWriter streamWriter = new StreamWriter(path,false,Encoding.UTF8))
+            {
+                for (int i = 0; i < workers.Length; i++)
+                    streamWriter.WriteLine($"{workers[i].ID}#{workers[i].DateTimeCreatData}#{workers[i].UserData}#" +
+                    $"{workers[i].Age}#{workers[i].Height}#{workers[i].DateBirth.ToShortDateString()}#" +
+                    $"{workers[i].PlaceBirth}");
+            }
+
+            Console.WriteLine("Изменения сохранены.");
+        }
 
         /// <summary>
         /// Загрузка данных в выбранном диапазоне
@@ -153,9 +241,9 @@ namespace Workers
         /// <param name="path"> Путь к файлу </param>
         static void LoadindDataInTheRand(string path)
         {
-            string[] SplitString = null;
+            string[] SplitString = null; // Массив для хранения строк, разделенных знаком '#'
 
-            string[] ReadLineFile = File.ReadAllLines(path);
+            string[] ReadLineFile = File.ReadAllLines(path); // Хранение данных из файла
             Worker[] workers = new Worker[ReadLineFile.Length];
 
             for (int i = 0; i < ReadLineFile.Length; i++)
@@ -200,9 +288,9 @@ namespace Workers
         /// <param name="path"></param>
         static void SortData(string path)
         {
-            string[] SplitString = null;
+            string[] SplitString = null; // Массив для хранения строк, разделенных знаком '#'
 
-            string[] ArrayFile = File.ReadAllLines(path);
+            string[] ArrayFile = File.ReadAllLines(path); // Хранение данных из файла
             Worker[] workers = new Worker[ArrayFile.Length];
 
             for (int i = 0; i < ArrayFile.Length; i++)
@@ -221,6 +309,7 @@ namespace Workers
             Console.WriteLine("\n Сортировать по:");
             Console.WriteLine("\0 1 - Возрастанию;");
             Console.WriteLine("\0 2 - Убыванию.");
+
             Console.Write("\nВаш выбор: ");
             int UserNumberChoice = int.Parse(Console.ReadLine());
 
@@ -321,6 +410,8 @@ namespace Workers
 
         }
 
+        #endregion
+
         static void Main(string[] args)
         {
             Console.WriteLine("Добрый день.");
@@ -359,7 +450,7 @@ namespace Workers
                     DeleteData("workers.txt");
                     break;
                 case 4:
-
+                    EditingData("workers.txt");
                     break;
                 case 5:
                     LoadindDataInTheRand("workers.txt");

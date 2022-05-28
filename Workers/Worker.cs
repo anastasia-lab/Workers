@@ -23,15 +23,5 @@ namespace Workers
             _id++;
         }
 
-        //public Worker(int id, DateTime TimeCreate, string UserFIO, int AgeUser, int HeightUser, DateTime DateBirthUser, string PlaceBirthUser)
-        //{
-        //    //ID = id;
-        //    //DateTimeCreatData = TimeCreate;
-        //    //UserData = UserFIO;
-        //    //Age = AgeUser;
-        //    //Height = HeightUser;
-        //    //DateBirth = DateBirthUser;
-        //    //PlaceBirth = PlaceBirthUser;
-        //}
     }
 }
