@@ -54,8 +54,8 @@ namespace Workers
                     string PlaceBirthWorker = Console.ReadLine();
 
                     streamWriter.WriteLine(
-                        $"{_worker.ID}#{DateTime.Now}#{UserFIO}#{AgeWorker}#{HeightWorker}#" +
-                        $"{dateBirthWorker.ToShortDateString()}#{PlaceBirthWorker}");
+                        $"{_worker.ID} # {DateTime.Now} # {UserFIO} # {AgeWorker} # {HeightWorker} # " +
+                        $"{dateBirthWorker.ToShortDateString()} # {PlaceBirthWorker}");
 
                     Console.WriteLine("\nДанные записаны.");
 
@@ -181,16 +181,48 @@ namespace Workers
                 workers[i].PlaceBirth = SplitString[6];
             }
 
-            Console.WriteLine("\nПо какому критерию отсортировать список сотрудников:");
-            Console.WriteLine("\0 1 - По дате созданания файла в порядке возрастания;");
-            Console.WriteLine("\0 2 - По дате созданания файла в порядке убыванияю");
+            Console.WriteLine("\n Сортировать по:");
+            Console.WriteLine("\0 1 - Возрастанию;");
+            Console.WriteLine("\0 2 - Убыванию.");
             Console.Write("\nВаш выбор: ");
             int UserNumberChoice = int.Parse(Console.ReadLine());
 
-            Console.WriteLine("\nРезультат:");
-            if (UserNumberChoice == 1)
+            if(UserNumberChoice==1)
             {
-                workers = workers.OrderBy(x => x.DateTimeCreatData).ToArray();
+                Console.WriteLine("\n Поле для сортировки:");
+                Console.WriteLine("\0 1 - Дате создания;");
+                Console.WriteLine("\0 2 - Ф.И.О сотрудника;");
+                Console.WriteLine("\0 3 - Возрасту сотрудника;");
+                Console.WriteLine("\0 4 - Росту сотрудника;");
+                Console.WriteLine("\0 5 - Дате рождения сотрудника;");
+                Console.WriteLine("\0 6 - Месту рождения сотрудника;");
+
+                Console.Write("\nВаш выбор: ");
+                int NumberSortChoice = int.Parse(Console.ReadLine());
+
+                Console.WriteLine("\nРезультат:");
+                switch (NumberSortChoice)
+                {
+                    case 1:
+                        workers = workers.OrderBy(x => x.DateTimeCreatData).ToArray();
+                        break;
+                    case 2:
+                        workers = workers.OrderBy(x => x.UserData).ToArray();
+                        break;
+                    case 3:
+                        workers = workers.OrderBy(x => x.Age).ToArray();
+                        break;
+                    case 4:
+                        workers = workers.OrderBy(x => x.Height).ToArray();
+                        break;
+                    case 5:
+                        workers = workers.OrderBy(x => x.DateBirth).ToArray();
+                        break;
+                    case 6:
+                        workers = workers.OrderBy(x => x.PlaceBirth).ToArray();
+                        break;
+
+                }
 
                 for (int i = 0; i < workers.Length; i++)
                 {
@@ -200,9 +232,47 @@ namespace Workers
                 }
             }
 
+
             if (UserNumberChoice == 2)
             {
-                workers = workers.OrderByDescending(x => x.DateTimeCreatData).ToArray();
+                Console.WriteLine("\n Поле для сортировки:");
+                Console.WriteLine("\0 1 - Индекс записи;");
+                Console.WriteLine("\0 2 - Дате создания;");
+                Console.WriteLine("\0 3 - Ф.И.О сотрудника;");
+                Console.WriteLine("\0 4 - Возрасту сотрудника;");
+                Console.WriteLine("\0 5 - Росту сотрудника;");
+                Console.WriteLine("\0 6 - Дате рождения сотрудника;");
+                Console.WriteLine("\0 7 - Месту рождения сотрудника;");
+
+                Console.Write("\nВаш выбор: ");
+                int NumberSortChoice = int.Parse(Console.ReadLine());
+
+                Console.WriteLine("\nРезультат:");
+                switch (NumberSortChoice)
+                {
+                    case 1:
+                        workers = workers.OrderByDescending(x => x.ID).ToArray();
+                        break;
+                    case 2:
+                        workers = workers.OrderByDescending(x => x.DateTimeCreatData).ToArray();
+                        break;
+                    case 3:
+                        workers = workers.OrderByDescending(x => x.UserData).ToArray();
+                        break;
+                    case 4:
+                        workers = workers.OrderByDescending(x => x.Age).ToArray();
+                        break;
+                    case 5:
+                        workers = workers.OrderByDescending(x => x.Height).ToArray();
+                        break;
+                    case 6:
+                        workers = workers.OrderByDescending(x => x.DateBirth).ToArray();
+                        break;
+                    case 7:
+                        workers = workers.OrderByDescending(x => x.PlaceBirth).ToArray();
+                        break;
+
+                }
 
                 for (int i = 0; i < workers.Length; i++)
                 {
