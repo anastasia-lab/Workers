@@ -152,7 +152,47 @@ namespace Workers
         /// </summary>
         /// <param name="path"> Путь к файлу </param>
         static void LoadindDataInTheRand(string path)
-        { }
+        {
+            string[] SplitString = null;
+
+            string[] ReadLineFile = File.ReadAllLines(path);
+            Worker[] workers = new Worker[ReadLineFile.Length];
+
+            for (int i = 0; i < ReadLineFile.Length; i++)
+            {
+                SplitString = ReadLineFile[i].Split('#');
+                workers[i] = new Worker();
+
+                workers[i].ID = int.Parse(SplitString[0]);
+                workers[i].DateTimeCreatData = DateTime.Parse(SplitString[1]);
+                workers[i].UserData = SplitString[2];
+                workers[i].Age = int.Parse(SplitString[3]);
+                workers[i].Height = int.Parse(SplitString[4]);
+                workers[i].DateBirth = DateTime.Parse(SplitString[5]);
+                workers[i].PlaceBirth = SplitString[6];
+            }
+
+            Console.WriteLine($"\nУ Вас {workers.Length} записей");
+
+            Console.WriteLine("\nВыбирите диапазон для загрузки.");
+            Console.Write("Начать с: ");
+            int UserNumberStartWith = int.Parse(Console.ReadLine());
+
+            Console.Write("До: ");
+            int UserNumberUntil = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("\nРезультат:");
+            for (int i = 0; i < workers.Length; i++)
+            {
+                if (workers[i].ID >= UserNumberStartWith && workers[i].ID <= UserNumberUntil)
+                {
+                    Console.WriteLine($"\0{workers[i].ID}#{workers[i].DateTimeCreatData}#{workers[i].UserData}#" +
+                        $"{workers[i].Age}#{workers[i].Height}#{workers[i].DateBirth.ToShortDateString()}#" +
+                        $"{workers[i].PlaceBirth}");
+                }
+            }
+
+        }
 
         /// <summary>
         /// Сортировка данных
@@ -290,7 +330,7 @@ namespace Workers
             Console.WriteLine("\0 2 - Создание записи;");
             Console.WriteLine("\0 3 - Удаление записи;");
             Console.WriteLine("\0 4 - Редактирование записи;");
-            Console.WriteLine("\0 5 - Загрузить записи в выбранном диаопазоне;");
+            Console.WriteLine("\0 5 - Загрузить данные в выбранном диапазоне;");
             Console.WriteLine("\0 6 - Сортировка записи");
 
             Console.Write("\nВаш выбор: ");
@@ -322,7 +362,7 @@ namespace Workers
 
                     break;
                 case 5:
-
+                    LoadindDataInTheRand("workers.txt");
                     break;
                 case 6:
                     SortData("workers.txt");
