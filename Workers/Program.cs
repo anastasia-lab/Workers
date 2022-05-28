@@ -103,7 +103,7 @@ namespace Workers
 
             string[] ReadFile = File.ReadAllLines(path); // Хранение данных из файла
 
-            Console.Write("\nКакую запись хотите удалить: ");
+            Console.Write("Какую запись хотите удалить: ");
             int UserNumber = int.Parse(Console.ReadLine());
 
             ReadFile[UserNumber - 1] = "";
@@ -209,34 +209,39 @@ namespace Workers
                     switch (UserNumberEdit)
                     {
                         case 1:
-                            Console.Write("Введите новой ФИО сотрудника: ");
+                            Console.Write("Введите новые ФИО сотрудника: ");
                             string NewWorkerFIO = Console.ReadLine();
 
                             workers[i].UserData = NewWorkerFIO;
+                            workers[i].DateTimeCreatData = DateTime.Now;
                             break;
                         case 2:
                             Console.Write("Введите новый возраст сотрудника: ");
                             int NewWorkerAge = int.Parse(Console.ReadLine());
 
                             workers[i].Age = NewWorkerAge;
+                            workers[i].DateTimeCreatData = DateTime.Now;
                             break;
                         case 3:
                             Console.Write("Введите новый рост сотрудника: ");
                             int NewWorkerHeight = int.Parse(Console.ReadLine());
 
                             workers[i].Height = NewWorkerHeight;
+                            workers[i].DateTimeCreatData = DateTime.Now;
                             break;
                         case 4:
                             Console.Write("Введите новую дату рождения сотрудника: ");
                             DateTime NewWorkerDateBirth = DateTime.Parse(Console.ReadLine());
 
                             workers[i].DateBirth = NewWorkerDateBirth;
+                            workers[i].DateTimeCreatData = DateTime.Now;
                             break;
                         case 5:
                             Console.Write("Введите новое место рождения сотрудника: ");
                             string NewWorkerPlaceBirth = Console.ReadLine();
 
                             workers[i].PlaceBirth = NewWorkerPlaceBirth;
+                            workers[i].DateTimeCreatData = DateTime.Now;
                             break;
                     }
                 }
@@ -280,7 +285,7 @@ namespace Workers
 
             Console.WriteLine($"\nУ Вас {workers.Length} записей");
 
-            Console.WriteLine("\nВыбирите диапазон для загрузки.");
+            Console.WriteLine("\nВыберите диапазон для загрузки.");
             Console.Write("Начать с: ");
             int UserNumberStartWith = int.Parse(Console.ReadLine());
 
@@ -334,12 +339,12 @@ namespace Workers
             if(UserNumberChoice==1)
             {
                 Console.WriteLine("\n Поле для сортировки:");
-                Console.WriteLine("\0 1 - Дате создания;");
+                Console.WriteLine("\0 1 - Дата создания;");
                 Console.WriteLine("\0 2 - Ф.И.О сотрудника;");
-                Console.WriteLine("\0 3 - Возрасту сотрудника;");
-                Console.WriteLine("\0 4 - Росту сотрудника;");
-                Console.WriteLine("\0 5 - Дате рождения сотрудника;");
-                Console.WriteLine("\0 6 - Месту рождения сотрудника;");
+                Console.WriteLine("\0 3 - Возраст сотрудника;");
+                Console.WriteLine("\0 4 - Рост сотрудника;");
+                Console.WriteLine("\0 5 - Дата рождения сотрудника;");
+                Console.WriteLine("\0 6 - Место рождения сотрудника.");
 
                 Console.Write("\nВаш выбор: ");
                 int NumberSortChoice = int.Parse(Console.ReadLine());
@@ -381,12 +386,12 @@ namespace Workers
             {
                 Console.WriteLine("\n Поле для сортировки:");
                 Console.WriteLine("\0 1 - Индекс записи;");
-                Console.WriteLine("\0 2 - Дате создания;");
+                Console.WriteLine("\0 2 - Дата создания;");
                 Console.WriteLine("\0 3 - Ф.И.О сотрудника;");
-                Console.WriteLine("\0 4 - Возрасту сотрудника;");
-                Console.WriteLine("\0 5 - Росту сотрудника;");
-                Console.WriteLine("\0 6 - Дате рождения сотрудника;");
-                Console.WriteLine("\0 7 - Месту рождения сотрудника;");
+                Console.WriteLine("\0 4 - Возраст сотрудника;");
+                Console.WriteLine("\0 5 - Рост сотрудника;");
+                Console.WriteLine("\0 6 - Дата рождения сотрудника;");
+                Console.WriteLine("\0 7 - Место рождения сотрудника.");
 
                 Console.Write("\nВаш выбор: ");
                 int NumberSortChoice = int.Parse(Console.ReadLine());
@@ -440,7 +445,7 @@ namespace Workers
             Console.WriteLine("\0 3 - Удаление записи;");
             Console.WriteLine("\0 4 - Редактирование записи;");
             Console.WriteLine("\0 5 - Загрузить данные в выбранном диапазоне;");
-            Console.WriteLine("\0 6 - Сортировка записи");
+            Console.WriteLine("\0 6 - Сортировка записи.");
 
             Console.Write("\nВаш выбор: ");
             int UserChose = int.Parse(Console.ReadLine());
