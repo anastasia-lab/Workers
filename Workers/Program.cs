@@ -206,6 +206,8 @@ namespace Workers
                     Console.Write("\nВаш выбор: ");
                     int UserNumberEdit = int.Parse(Console.ReadLine());
 
+                    workers[i].DateTimeCreatData = DateTime.Now; // новые дата и время при редактировании данных
+
                     switch (UserNumberEdit)
                     {
                         case 1:
@@ -213,35 +215,30 @@ namespace Workers
                             string NewWorkerFIO = Console.ReadLine();
 
                             workers[i].UserData = NewWorkerFIO;
-                            workers[i].DateTimeCreatData = DateTime.Now;
                             break;
                         case 2:
                             Console.Write("Введите новый возраст сотрудника: ");
                             int NewWorkerAge = int.Parse(Console.ReadLine());
 
                             workers[i].Age = NewWorkerAge;
-                            workers[i].DateTimeCreatData = DateTime.Now;
                             break;
                         case 3:
                             Console.Write("Введите новый рост сотрудника: ");
                             int NewWorkerHeight = int.Parse(Console.ReadLine());
 
                             workers[i].Height = NewWorkerHeight;
-                            workers[i].DateTimeCreatData = DateTime.Now;
                             break;
                         case 4:
                             Console.Write("Введите новую дату рождения сотрудника: ");
                             DateTime NewWorkerDateBirth = DateTime.Parse(Console.ReadLine());
 
                             workers[i].DateBirth = NewWorkerDateBirth;
-                            workers[i].DateTimeCreatData = DateTime.Now;
                             break;
                         case 5:
                             Console.Write("Введите новое место рождения сотрудника: ");
                             string NewWorkerPlaceBirth = Console.ReadLine();
 
                             workers[i].PlaceBirth = NewWorkerPlaceBirth;
-                            workers[i].DateTimeCreatData = DateTime.Now;
                             break;
                     }
                 }
